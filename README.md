@@ -106,4 +106,4 @@ fetch(
 ```
 
 # License
-[MIT](https://github.com/spineapi/spine-api/blob/master/LICENSE)
+[MIT](https://github.com/northfoxz/spine-api/blob/master/LICENSE)
