@@ -44,7 +44,6 @@ class Connection():
       'authToken': authToken,
       'function': function,
     }
-    pass
   
   def run(self):
     try:

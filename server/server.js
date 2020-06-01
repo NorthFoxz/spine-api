@@ -66,11 +66,12 @@ app.post('/api/:project_path/:pathname', async (req, res) => {
   if (pathdict[pathname].requiresAuth && pathdict[pathname].authToken !== req.body.authToken)
     return res.status(401).json({ error: 'Not authorized' });
 
-  let input = {}
+  let input = {};
+  
   try {
-    input = JSON.parse(req.body.input);
+    input = req.body.input;
   } catch {
-    return res.status(400).json({ error: 'You have to first stringify your json input. e.g. JSON.stringify(input)'})
+    return res.status(400).json({ error: 'You have to first stringify your json input. e.g. JSON.stringify({ input: YOUR_DATA })'})
   }
   const requestUUID = uuidv4();
   const result = await sendData({ pathname, input }, requestUUID);
