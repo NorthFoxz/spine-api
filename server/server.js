@@ -25,10 +25,11 @@ const isValid = pc => {
   return false;
 }
 let projectInfo = {
-  project_name: '',
-  description: '',
-  author: '',
-  link: '',
+  project_path: "",
+  project_name: "",
+  description: "",
+  author: "",
+  link: "",
 };
 let pathdict = {};
 /*
@@ -45,20 +46,26 @@ app.get('/', (req, res) => {
   if (socketAvail) {
     let pathInfo = "";
     for (let pathname in pathdict) {
-      pathInfo += `<div><code>POST /api/${projectInfo.project_name}/${pathname}</code></div>`
+      pathInfo += `<div><code>POST /api/${projectInfo.project_path}/${pathname}</code></div>`
     }
-    res.send(`<div><h1>Spine API</h1><h3>Project Information</h3><hr/><div>Project Name: ${projectInfo.project_name}</div><div>Author: ${projectInfo.author}</div><div>Link: <a href="${projectInfo.link}">${projectInfo.link}</a></div><p>${projectInfo.description}</p><h3>API Endpoints</h3><hr/>${pathInfo}</div>`);
+    res.send(`<div><h1>Spine API</h1><h3>Project Information</h3><hr/><div>API path: ${projectInfo.project_path}</div><div>Project Name: ${projectInfo.project_name}</div><div>Author: ${projectInfo.author}</div><div>Link: <a href="${projectInfo.link}">${projectInfo.link}</a></div><p>${projectInfo.description}</p><h3>API Endpoints</h3><hr/>${pathInfo}</div>`);
   } else
     res.send(`<div><h1>Spine API</h1><span>Your passcode:<br/> <code>${passcode}</code><br/><span style="color:#5f5f5f;font-size:14px;">(The message will disappear after you have successfully connected)</span></span></div>`)
 });
 
-app.post('/api/:project_name/:pathname', async (req, res) => {
-  if (!socketAvail) return res.status(400).json({ error: `Data server not ready yet` });
-  const project_name = req.params.project_name;
-  if (project_name !== projectInfo.project_name)  return res.status(400).json({ error: 'Invalid project name' });
+app.post('/api/:project_path/:pathname', async (req, res) => {
+  if (!socketAvail)
+    return res.status(400).json({ error: `Data server not ready yet` });
+  const project_path = req.params.project_path;
+  if (project_path !== projectInfo.project_path)
+    return res.status(400).json({ error: 'Invalid project path' });
+
   const pathname = req.params.pathname;
-  if (!(pathname in pathdict)) return res.status(400).json({ error: 'Invalid pathname' });
-  if (pathdict[pathname].requiresAuth && pathdict[pathname].authToken !== req.body.authToken) return res.status(401).json({ error: 'Not authorized' });
+  if (!(pathname in pathdict))
+    return res.status(400).json({ error: 'Invalid pathname' });
+  if (pathdict[pathname].requiresAuth && pathdict[pathname].authToken !== req.body.authToken)
+    return res.status(401).json({ error: 'Not authorized' });
+
   let input = {}
   try {
     input = JSON.parse(req.body.input);

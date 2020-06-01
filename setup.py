@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="spineapi",
-    version="0.0.3",
+    version="0.0.5",
     author="northfoxz",
     author_email="firstera15@gmail.com",
     description="Access your python functions through HTTP requests.",
